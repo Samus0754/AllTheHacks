@@ -15,8 +15,6 @@
 #include <string.h>
 #include "pnglite.h"
 
-
-
 static png_alloc_t png_alloc;
 static png_free_t png_free;
 
@@ -363,8 +361,6 @@ static int png_init_inflate(png_t* png)
 
 	if(!stream)
 		return PNG_MEMORY_ERROR;
-
-	
 
 #if USE_ZLIB
 	memset(stream, 0, sizeof(z_stream));

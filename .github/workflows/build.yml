@@ -1,0 +1,68 @@
+name: Build
+
+jobs:
+  build-bam:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macOS-latest, windows-latest]
+        include:
+        - os: ubuntu-latest
+          exe-name: AllTheHaxx_d
+          build-args: --parallel
+          env:
+            CFLAGS: -Wdeclaration-after-statement -Werror
+            CXXFLAGS: -Werror
+        - os: macOS-latest
+          exe-name: AllTheHaxx_d
+          build-args: --parallel
+          env:
+            CFLAGS: -Wdeclaration-after-statement -Werror
+            CXXFLAGS: -Werror
+        - os: windows-latest
+          exe-name: AllTheHaxx_d.exe
+          env:
+            CFLAGS: /WX
+            CXXFLAGS: /WX
+            LDFLAGS: /WX
+
+    - name: Prepare Linux
+      if: contains(matrix.os, 'ubuntu')
+      run: |
+        sudo apt-get update -y
+        sudo apt-get install pkg-config cmake libfreetype6-dev libnotify-dev libsdl2-dev libsqlite3-dev -y
+
+    - name: Prepare macOS
+      if: contains(matrix.os, 'macOS')
+      run: |
+        brew update || true
+        brew install pkg-config sdl2
+        brew upgrade freetype
+        sudo rm -rf /Library/Developer/CommandLineTools
+
+    - name: Prepare
+      run: |
+        git clone https://github.com/matricks/bam ~/bam/
+        cd ~/bam; ./make_unix.sh
+        cp ~/bam/bam .
+
+    - name: Build in debug mode
+      env: ${{ matrix.env }}
+      run: |
+        bam
+
+    - name: Package
+      run: |
+        mkdir -p release
+        cp -f ${{ matrix.exe-name }} release
+        cp -rf data release
+
+    - name: Zip artifact for deployment
+      run: zip release.zip release/* -r
+
+    - name: Upload artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: ath
+        path: release.zip
