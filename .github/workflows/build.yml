@@ -44,7 +44,7 @@ jobs:
     - name: Prepare
       run: |
         git clone https://github.com/matricks/bam ~/bam/
-        cd ~/bam; ./make_unix.sh
+        ./~/bam/make_unix.sh
         cp ~/bam/bam .
 
     - name: Build in debug mode
