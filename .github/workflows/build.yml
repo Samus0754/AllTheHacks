@@ -1,5 +1,5 @@
 name: Build
-
+on: push
 jobs:
   build-bam:
     runs-on: ${{ matrix.os }}
