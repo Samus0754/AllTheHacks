@@ -6,7 +6,7 @@
 
 #define GAME_VERSION "0.6.4"
 #define ATH_VERSION "1.0.0"
-#define DDNET_VERSION "10.7.1+"
+#define DDNET_VERSION "15.8.1"
 #define BUILD_DATE __DATE__ ", " __TIME__
 
 #define ALLTHEHAXX_VERSIONID ATH_VERSION
@@ -24,6 +24,6 @@ static const char GAME_ATH_VERSION[10] = ATH_VERSION;
 
 // do not modify these, they belong to ddnet
 static const char GAME_RELEASE_VERSION[8] = DDNET_VERSION;
-#define CLIENT_VERSIONNR 10074
+#define CLIENT_VERSIONNR 15081
 
 #endif
